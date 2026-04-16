@@ -25,7 +25,7 @@ options:
 helm:
   name: dagster
   source: https://dagster-io.github.io/helm
-  chart: dagster
+  chart: dagster/dagster
   version: 1.12.13
   configurations:
     # Main webserver deployment.
