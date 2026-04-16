@@ -82,11 +82,11 @@ links:
       - name: DAGSTER_PG_PORT
         value: "{{links.postgres.port}}"
       - name: DAGSTER_PG_DB
-        value: "{{links.postgres.database}}"
+        value: "{{links.postgres.db.name}}"
       - name: DAGSTER_PG_USER
-        value: "{{links.postgres.user}}"
+        value: "{{links.postgres.user.name}}"
       - name: DAGSTER_PG_PASSWORD
-        value: "{{links.postgres.password}}"
+        value: "{{links.postgres.user.password}}"
         secret: true
     selectors:
     - type: db
