@@ -78,15 +78,15 @@ links:
     required: true
     env:
       - name: DAGSTER_PG_HOST
-        value: "{{links.postgres.host}}"
+        value: "{{link.database.host}}"
       - name: DAGSTER_PG_PORT
-        value: "{{links.postgres.port}}"
+        value: "{{link.database.port}}"
       - name: DAGSTER_PG_DB
-        value: "{{links.postgres.db.name}}"
+        value: "{{link.database.db.name}}"
       - name: DAGSTER_PG_USER
-        value: "{{links.postgres.user.name}}"
+        value: "{{link.database.user.name}}"
       - name: DAGSTER_PG_PASSWORD
-        value: "{{links.postgres.user.password}}"
+        value: "{{link.database.user.password}}"
         secret: true
     selectors:
     - type: db
