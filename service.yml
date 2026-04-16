@@ -21,8 +21,8 @@ endpoints:
         type: http
 
 options:
-- version: 1
-  tag: 1.12.14
+- version: '1'
+  tag: '1.12.13'
   default: true
 
 helm:
