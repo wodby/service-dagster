@@ -40,7 +40,7 @@ helm:
       sidecars: dagsterWebserver.sidecarContainers
 
     # Optional daemon deployment created by the same Helm release.
-    - name: dagster
+    - name: daemon
       container: dagster
       annotations: dagsterDaemon.annotations
       labels: dagsterDaemon.labels
