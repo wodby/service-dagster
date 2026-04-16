@@ -3,8 +3,13 @@ title: Dagster
 type: service
 
 containers:
-  - name: dagster
-    title: Dagster
+  - name: webserver
+    title: Dagster webserver
+    image: dagster/dagster-celery-k8s
+    main: true
+  - name: daemon
+    title: Dagster daemon
+    image: dagster/dagster-celery-k8s
 
 endpoints:
   - name: web
@@ -14,6 +19,11 @@ endpoints:
         main: true
         number: 80
         type: http
+
+options:
+- version: 1
+  tag: 1.12.14
+  default: true
 
 helm:
   name: dagster
