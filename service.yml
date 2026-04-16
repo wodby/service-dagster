@@ -1,0 +1,99 @@
+name: dagster
+title: Dagster
+type: service
+
+containers:
+  - name: dagster
+    title: Dagster
+
+endpoints:
+  - name: web
+    title: Web UI
+    ports:
+      - name: http
+        main: true
+        number: 80
+        type: http
+
+helm:
+  name: dagster
+  source: https://dagster-io.github.io/helm
+  chart: dagster
+  version: 1.12.13
+  configurations:
+    # Main webserver deployment.
+    - name: webserver
+      container: dagster
+      annotations: dagsterWebserver.annotations
+      labels: dagsterWebserver.labels
+      env: dagsterWebserver.env
+      resources: dagsterWebserver.resources
+      volumes: dagsterWebserver.volumes
+      mounts: dagsterWebserver.volumeMounts
+      sidecars: dagsterWebserver.sidecarContainers
+
+    # Optional daemon deployment created by the same Helm release.
+    - name: dagster
+      container: dagster
+      annotations: dagsterDaemon.annotations
+      labels: dagsterDaemon.labels
+      env: dagsterDaemon.env
+      resources: dagsterDaemon.resources
+      volumes: dagsterDaemon.volumes
+      mounts: dagsterDaemon.volumeMounts
+      sidecars: dagsterDaemon.sidecarContainers
+
+  values:
+    # Expose Wodby endpoint on the Dagster webserver service.
+    - name: dagsterWebserver.service.port
+      value: 80
+
+    # Keep daemon enabled by default; users can switch it off if they only want the UI.
+    - name: dagsterDaemon.enabled
+      value: true
+
+    # Disable bundled Postgres by default if you want users to connect an external DB service.
+    # Remove this if you want the upstream chart to provision Postgres automatically.
+    - name: postgresql.enabled
+      value: false
+
+    # Reasonable defaults for a single-service Wodby setup.
+    - name: runLauncher.type
+      value: K8sRunLauncher
+    - name: dagsterDaemon.runCoordinator.enabled
+      value: true
+    - name: dagsterDaemon.runCoordinator.type
+      value: QueuedRunCoordinator
+
+links:
+  - name: postgres
+    title: PostgreSQL
+    required: false
+    env:
+      - name: DAGSTER_PG_HOST
+        value: "{{links.postgres.host}}"
+      - name: DAGSTER_PG_PORT
+        value: "{{links.postgres.port}}"
+      - name: DAGSTER_PG_DB
+        value: "{{links.postgres.database}}"
+      - name: DAGSTER_PG_USER
+        value: "{{links.postgres.user}}"
+      - name: DAGSTER_PG_PASSWORD
+        value: "{{links.postgres.password}}"
+        secret: true
+
+tokens:
+  - name: dagster-secret
+    secret: true
+    generate:
+      regex: '[A-Za-z0-9]{64}'
+
+actions:
+  - name: wipe-pending-runs
+    title: Wipe pending runs
+    type: button
+    args:
+      - dagster
+      - run
+      - wipe
+      - --force
