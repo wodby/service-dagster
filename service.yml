@@ -4,11 +4,9 @@ type: service
 
 containers:
   - name: webserver
-    title: Dagster webserver
     image: dagster/dagster-celery-k8s
     main: true
   - name: daemon
-    title: Dagster daemon
     image: dagster/dagster-celery-k8s
 
 endpoints:
@@ -18,7 +16,7 @@ endpoints:
       - name: http
         main: true
         number: 80
-        type: http
+        protocol: http
 
 options:
 - version: '1'
@@ -91,10 +89,13 @@ links:
       - name: DAGSTER_PG_PASSWORD
         value: "{{links.postgres.password}}"
         secret: true
+    selectors:
+    - type: db
+      labels:
+      - postgres
 
 tokens:
   - name: dagster-secret
-    secret: true
     generate:
       regex: '[A-Za-z0-9]{64}'
 
