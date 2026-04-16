@@ -75,7 +75,7 @@ helm:
 links:
   - name: postgres
     title: PostgreSQL
-    required: false
+    required: true
     env:
       - name: DAGSTER_PG_HOST
         value: "{{links.postgres.host}}"
