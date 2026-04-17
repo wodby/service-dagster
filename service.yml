@@ -80,11 +80,17 @@ helm:
       value: true
     - name: dagsterDaemon.runCoordinator.type
       value: QueuedRunCoordinator
+      
     - name: dagster-user-deployments.enabled
       value: false
     - name: dagster-user-deployments.enableSubchart
       value: false
     - name: dagster-user-deployments.deployments
+      value: []
+
+    - name: dagsterWebserver.workspace.enabled
+      value: true
+    - name: dagsterWebserver.workspace.servers
       value: []
 
 links:
