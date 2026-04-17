@@ -74,6 +74,10 @@ helm:
       value: QueuedRunCoordinator
     - name: dagster-user-deployments.enabled
       value: false
+    - name: dagster-user-deployments.enableSubchart
+      value: false
+    - name: dagster-user-deployments.deployments
+      value: []
 
 links:
   - name: postgres
