@@ -12,6 +12,7 @@ containers:
 
 endpoints:
   - name: web
+    service: '{{helm.release}}-dagster-webserver'
     ports:
       - name: http
         main: true
