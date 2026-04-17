@@ -64,6 +64,14 @@ helm:
     # Remove this if you want the upstream chart to provision Postgres automatically.
     - name: postgresql.enabled
       value: false
+    - name: postgresqlHost
+      value: "{{links.postgres.database.host}}"
+    - name: postgresqlUsername
+      value: "{{links.postgres.database.user.name}}"
+    - name: postgresqlDatabase
+      value: "{{links.postgres.database.db.name}}"
+    - name: postgresqlPassword
+      value: "{{links.postgres.database.user.password}}"
 
     # Reasonable defaults for a single-service Wodby setup.
     - name: runLauncher.type
@@ -83,18 +91,6 @@ links:
   - name: postgres
     title: PostgreSQL
     required: true
-    env:
-      - name: DAGSTER_PG_HOST
-        value: "{{link.database.host}}"
-      - name: DAGSTER_PG_PORT
-        value: "{{link.database.port}}"
-      - name: DAGSTER_PG_DB
-        value: "{{link.database.db.name}}"
-      - name: DAGSTER_PG_USER
-        value: "{{link.database.user.name}}"
-      - name: DAGSTER_PG_PASSWORD
-        value: "{{link.database.user.password}}"
-        secret: true
     selectors:
     - type: db
       labels:
