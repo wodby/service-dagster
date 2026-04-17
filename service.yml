@@ -72,6 +72,8 @@ helm:
       value: "{{links.postgres.database.db.name}}"
     - name: postgresql.postgresqlPassword
       value: "{{links.postgres.database.user.password}}"
+    - name: postgresql.postgresqlScheme
+      value: "{{links.postgres.database.db.name}}"
 
     # Reasonable defaults for a single-service Wodby setup.
     - name: runLauncher.type
