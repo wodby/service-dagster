@@ -64,13 +64,13 @@ helm:
     # Remove this if you want the upstream chart to provision Postgres automatically.
     - name: postgresql.enabled
       value: false
-    - name: postgresqlHost
+    - name: postgresql.postgresqlHost
       value: "{{links.postgres.database.host}}"
-    - name: postgresqlUsername
+    - name: postgresql.postgresqlUsername
       value: "{{links.postgres.database.user.name}}"
-    - name: postgresqlDatabase
+    - name: postgresql.postgresqlDatabase
       value: "{{links.postgres.database.db.name}}"
-    - name: postgresqlPassword
+    - name: postgresql.postgresqlPassword
       value: "{{links.postgres.database.user.password}}"
 
     # Reasonable defaults for a single-service Wodby setup.
