@@ -108,8 +108,8 @@ links:
 configs:
 - name: workspace
   title: Workspace
-  filename: workspace.yml
-  config: workspace.yml
+  filename: workspace.yaml
+  config: workspace.yaml
 
 tokens:
   - name: dagster-secret
