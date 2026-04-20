@@ -108,7 +108,7 @@ links:
 configs:
 - name: workspace
   title: Workspace
-  filepath: /etc/dummy-workspace.yml
+  filename: workspace.yml
   config: workspace.yml
 
 tokens:
