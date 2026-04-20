@@ -94,7 +94,7 @@ helm:
     - name: dagsterWebserver.workspace.servers
       value: []
     - name: dagsterWebserver.workspace.externalConfigmap
-      value: workspace
+      value: "{{configs.workspace}}"
 
 links:
   - name: postgres
