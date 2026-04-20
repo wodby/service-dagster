@@ -93,6 +93,8 @@ helm:
       value: true
     - name: dagsterWebserver.workspace.servers
       value: []
+    - name: dagsterWebserver.workspace.externalConfigmap
+      value: workspace
 
 links:
   - name: postgres
@@ -102,6 +104,12 @@ links:
     - type: db
       labels:
       - postgres
+
+configs:
+- name: workspace
+  title: Workspace
+  filepath: /etc/dummy-workspace.yml
+  config: workspace.yml
 
 tokens:
   - name: dagster-secret
