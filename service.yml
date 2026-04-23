@@ -119,7 +119,7 @@ workloads:
         registry: ''
         pullPolicy: dagsterWebserver.image.pullPolicy
 - id: daemon
-  name: '{{service.helm.release}}-dagster-daemon'
+  name: '{{service.helm.release}}-daemon'
   kind: deployment
   helm:
     annotations: dagsterDaemon.annotations
