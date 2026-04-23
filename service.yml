@@ -3,21 +3,14 @@ icon: dagster
 title: Dagster
 type: service
 
-containers:
-  - name: webserver
-    image: dagster/dagster-celery-k8s
-    main: true
-  - name: daemon
-    image: dagster/dagster-celery-k8s
-
 endpoints:
-  - name: web
-    service: '{{service.helm.release}}-dagster-webserver'
-    ports:
-      - name: http
-        main: true
-        number: 80
-        protocol: http
+- name: web
+  service: '{{service.helm.release}}-dagster-webserver'
+  ports:
+  - name: http
+    main: true
+    number: 80
+    protocol: http
 
 options:
 - version: '1'
@@ -29,81 +22,58 @@ helm:
   source: https://dagster-io.github.io/helm
   chart: dagster/dagster
   version: 1.12.13
-  configurations:
-    # Main webserver deployment.
-    - name: webserver
-      container: dagster
-      annotations: dagsterWebserver.annotations
-      labels: dagsterWebserver.labels
-      env: dagsterWebserver.env
-      resources: dagsterWebserver.resources
-      volumes: dagsterWebserver.volumes
-      mounts: dagsterWebserver.volumeMounts
-      sidecars: dagsterWebserver.sidecarContainers
-
-    # Optional daemon deployment created by the same Helm release.
-    - name: daemon
-      container: dagster
-      annotations: dagsterDaemon.annotations
-      labels: dagsterDaemon.labels
-      env: dagsterDaemon.env
-      resources: dagsterDaemon.resources
-      volumes: dagsterDaemon.volumes
-      mounts: dagsterDaemon.volumeMounts
-      sidecars: dagsterDaemon.sidecarContainers
-
   values:
     # Expose Wodby endpoint on the Dagster webserver service.
-    - name: dagsterWebserver.service.port
-      value: 80
+  - name: dagsterWebserver.service.port
+    value: 80
 
     # Keep daemon enabled by default; users can switch it off if they only want the UI.
-    - name: dagsterDaemon.enabled
-      value: true
+  - name: dagsterDaemon.enabled
+    value: true
 
     # Disable bundled Postgres by default if you want users to connect an external DB service.
     # Remove this if you want the upstream chart to provision Postgres automatically.
-    - name: postgresql.enabled
-      value: false
-    - name: postgresql.postgresqlHost
-      value: "{{links.postgres.database.host}}"
-    - name: postgresql.postgresqlUsername
-      value: "{{links.postgres.database.user.name}}"
-    - name: postgresql.postgresqlDatabase
-      value: "{{links.postgres.database.db.name}}"
-    - name: postgresql.postgresqlPassword
-      value: "{{links.postgres.database.user.password}}"
+  - name: postgresql.enabled
+    value: false
+  - name: postgresql.postgresqlHost
+    value: "{{links.postgres.database.host}}"
+  - name: postgresql.postgresqlUsername
+    value: "{{links.postgres.database.user.name}}"
+  - name: postgresql.postgresqlDatabase
+    value: "{{links.postgres.database.db.name}}"
+  - name: postgresql.postgresqlPassword
+    value: "{{links.postgres.database.user.password}}"
 
     # Reasonable defaults for a single-service Wodby setup.
-    - name: runLauncher.type
-      value: K8sRunLauncher
-    - name: dagsterDaemon.runCoordinator.enabled
-      value: true
-    - name: dagsterDaemon.runCoordinator.type
-      value: QueuedRunCoordinator
-      
-    - name: dagster-user-deployments.enabled
-      value: true
-    - name: dagster-user-deployments.enableSubchart
-      value: false
-    - name: dagster-user-deployments.deployments
-      value: []
+  - name: runLauncher.type
+    value: K8sRunLauncher
+  - name: dagsterDaemon.runCoordinator.enabled
+    value: true
+  - name: dagsterDaemon.runCoordinator.type
+    value: QueuedRunCoordinator
 
-    - name: dagsterWebserver.workspace.enabled
-      value: true
-    - name: dagsterWebserver.workspace.servers
-      value: []
-    - name: dagsterWebserver.workspace.externalConfigmap
-      value: "{{configs.workspace.configMap}}"
+  - name: dagster-user-deployments.enabled
+    value: true
+  - name: dagster-user-deployments.enableSubchart
+    value: false
+  - name: dagster-user-deployments.deployments
+    value: []
+
+  - name: dagsterWebserver.workspace.enabled
+    value: true
+  - name: dagsterWebserver.workspace.servers
+    value: []
+  - name: dagsterWebserver.workspace.externalConfigmap
+    value: "{{configs.workspace.configMap}}"
 
 links:
-  - name: postgres
-    title: PostgreSQL
-    required: true
-    selectors:
-    - type: db
-      labels:
-      - postgres
+- name: postgres
+  title: PostgreSQL
+  required: true
+  selectors:
+  - type: db
+    labels:
+    - postgres
 
 configs:
 - name: workspace
@@ -112,16 +82,58 @@ configs:
   config: workspace.yaml
 
 tokens:
-  - name: dagster-secret
-    generate:
-      regex: '[A-Za-z0-9]{64}'
+- name: dagster-secret
+  generate:
+    regex: '[A-Za-z0-9]{64}'
 
 actions:
-  - name: wipe-pending-runs
-    title: Wipe pending runs
-    type: button
-    args:
-      - dagster
-      - run
-      - wipe
-      - --force
+- name: wipe-pending-runs
+  title: Wipe pending runs
+  type: button
+  args:
+  - dagster
+  - run
+  - wipe
+  - --force
+workloads:
+- id: webserver
+  name: '{{service.helm.release}}-dagster-webserver'
+  kind: deployment
+  primary: true
+  containers:
+  - name: dagster
+    image: dagster/dagster-celery-k8s
+    helm:
+      resources: dagsterWebserver.resources
+      env: dagsterWebserver.env
+      mounts: dagsterWebserver.volumeMounts
+      image:
+        repository: dagsterWebserver.image.repository
+        tag: dagsterWebserver.image.tag
+        registry: ''
+        pullPolicy: dagsterWebserver.image.pullPolicy
+  helm:
+    annotations: dagsterWebserver.annotations
+    labels: dagsterWebserver.labels
+    volumes: dagsterWebserver.volumes
+    sidecars: dagsterWebserver.sidecarContainers
+- id: daemon
+  name: '{{service.helm.release}}-dagster-daemon'
+  kind: deployment
+  containers:
+  - name: dagster
+    image: dagster/dagster-celery-k8s
+    helm:
+      resources: dagsterDaemon.resources
+      env: dagsterDaemon.env
+      mounts: dagsterDaemon.volumeMounts
+      image:
+        repository: dagsterDaemon.image.repository
+        tag: dagsterDaemon.image.tag
+        registry: ''
+        pullPolicy: dagsterDaemon.image.pullPolicy
+  helm:
+    annotations: dagsterDaemon.annotations
+    labels: dagsterDaemon.labels
+    volumes: dagsterDaemon.volumes
+    sidecars: dagsterDaemon.sidecarContainers
