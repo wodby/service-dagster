@@ -105,7 +105,7 @@ workloads:
     annotations: dagsterWebserver.annotations
     labels: dagsterWebserver.labels
     volumes: dagsterWebserver.volumes
-    sidecars: dagsterWebserver.sidecarContainers
+    sidecars: dagsterWebserver.extraContainers
   containers:
   - name: dagster
     image: dagster/dagster-celery-k8s
@@ -125,7 +125,7 @@ workloads:
     annotations: dagsterDaemon.annotations
     labels: dagsterDaemon.labels
     volumes: dagsterDaemon.volumes
-    sidecars: dagsterDaemon.sidecarContainers
+    sidecars: dagsterDaemon.extraContainers
   containers:
   - name: dagster
     image: dagster/dagster-celery-k8s
