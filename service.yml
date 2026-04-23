@@ -5,7 +5,7 @@ type: service
 
 endpoints:
 - name: web
-  service: '{{service.helm.release}}-dagster-webserver'
+  workload: webserver
   ports:
   - name: http
     main: true
@@ -97,8 +97,11 @@ actions:
   - --force
 
 workloads:
-- id: webserver
-  name: '{{service.helm.release}}-dagster-webserver'
+- name: webserver
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: '{{service.helm.release}}'
+      component: dagster-webserver
   kind: deployment
   primary: true
   helm:
@@ -118,8 +121,11 @@ workloads:
         tag: dagsterWebserver.image.tag
         registry: ''
         pullPolicy: dagsterWebserver.image.pullPolicy
-- id: daemon
-  name: '{{service.helm.release}}-daemon'
+- name: daemon
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: '{{service.helm.release}}'
+      component: dagster-daemon
   kind: deployment
   helm:
     annotations: dagsterDaemon.annotations
