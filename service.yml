@@ -95,11 +95,17 @@ actions:
   - run
   - wipe
   - --force
+
 workloads:
 - id: webserver
   name: '{{service.helm.release}}-dagster-webserver'
   kind: deployment
   primary: true
+  helm:
+    annotations: dagsterWebserver.annotations
+    labels: dagsterWebserver.labels
+    volumes: dagsterWebserver.volumes
+    sidecars: dagsterWebserver.sidecarContainers
   containers:
   - name: dagster
     image: dagster/dagster-celery-k8s
@@ -112,14 +118,14 @@ workloads:
         tag: dagsterWebserver.image.tag
         registry: ''
         pullPolicy: dagsterWebserver.image.pullPolicy
-  helm:
-    annotations: dagsterWebserver.annotations
-    labels: dagsterWebserver.labels
-    volumes: dagsterWebserver.volumes
-    sidecars: dagsterWebserver.sidecarContainers
 - id: daemon
   name: '{{service.helm.release}}-dagster-daemon'
   kind: deployment
+  helm:
+    annotations: dagsterDaemon.annotations
+    labels: dagsterDaemon.labels
+    volumes: dagsterDaemon.volumes
+    sidecars: dagsterDaemon.sidecarContainers
   containers:
   - name: dagster
     image: dagster/dagster-celery-k8s
@@ -132,8 +138,3 @@ workloads:
         tag: dagsterDaemon.image.tag
         registry: ''
         pullPolicy: dagsterDaemon.image.pullPolicy
-  helm:
-    annotations: dagsterDaemon.annotations
-    labels: dagsterDaemon.labels
-    volumes: dagsterDaemon.volumes
-    sidecars: dagsterDaemon.sidecarContainers
