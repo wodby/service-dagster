@@ -100,7 +100,7 @@ workloads:
 - name: webserver
   selector:
     matchLabels:
-      app.kubernetes.io/instance: '{{service.helm.release}}'
+      app.kubernetes.io/instance: '{{helm.release}}'
       component: dagster-webserver
   kind: deployment
   primary: true
@@ -126,7 +126,7 @@ workloads:
 - name: daemon
   selector:
     matchLabels:
-      app.kubernetes.io/instance: '{{service.helm.release}}'
+      app.kubernetes.io/instance: '{{helm.release}}'
       component: dagster-daemon
   kind: deployment
   helm:
