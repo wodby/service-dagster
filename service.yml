@@ -119,6 +119,8 @@ workloads:
       image:
         repository: dagsterWebserver.image.repository
         tag: dagsterWebserver.image.tag
+        # Dagster expects repository to contain the full image path, so empty
+        # registry disables separate registry injection in Wodby.
         registry: ''
         pullPolicy: dagsterWebserver.image.pullPolicy
 - name: daemon
@@ -142,5 +144,7 @@ workloads:
       image:
         repository: dagsterDaemon.image.repository
         tag: dagsterDaemon.image.tag
+        # Dagster expects repository to contain the full image path, so empty
+        # registry disables separate registry injection in Wodby.
         registry: ''
         pullPolicy: dagsterDaemon.image.pullPolicy
