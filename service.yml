@@ -21,7 +21,7 @@ helm:
   name: dagster
   source: https://dagster-io.github.io/helm
   chart: dagster/dagster
-  version: 1.13.11
+  version: 1.13.12
   values:
     # Expose Wodby endpoint on the Dagster webserver service.
   - name: dagsterWebserver.service.port
