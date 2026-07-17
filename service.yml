@@ -14,14 +14,14 @@ endpoints:
 
 options:
 - version: '1'
-  tag: '1.13.13'
+  tag: '1.13.14'
   default: true
 
 helm:
   name: dagster
   source: https://dagster-io.github.io/helm
   chart: dagster/dagster
-  version: 1.13.13
+  version: 1.13.14
   values:
     # Expose Wodby endpoint on the Dagster webserver service.
   - name: dagsterWebserver.service.port
