@@ -94,7 +94,7 @@ tokens:
 
 actions:
 - name: wipe-pending-runs
-  title: Wipe pending runs
+  title: Wipe all run history
   type: button
   args:
   - dagster

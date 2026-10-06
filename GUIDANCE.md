@@ -13,7 +13,7 @@ The service deploys no user code. The webserver reads its workspace from the con
 ## Runs
 
 - Runs are queued by the daemon (`QueuedRunCoordinator`) and launched as Kubernetes jobs (`K8sRunLauncher`), not inside the webserver or daemon containers.
-- The action "Wipe pending runs" executes `dagster run wipe --force`, which deletes all run history and event logs and cannot be undone.
+- The action "Wipe all run history" executes `dagster run wipe --force`, which deletes all run history and event logs and cannot be undone.
 
 ## Changing configuration
 
