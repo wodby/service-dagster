@@ -1,6 +1,7 @@
 name: dagster
 icon: dagster
 title: Dagster
+guidance: GUIDANCE.md
 type: service
 scalable: false
 
