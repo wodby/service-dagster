@@ -3,6 +3,7 @@ icon: dagster
 title: Dagster
 guidance: GUIDANCE.md
 type: service
+basicAuth: true
 scalable: false
 
 endpoints:
