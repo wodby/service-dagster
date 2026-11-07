@@ -119,6 +119,10 @@ workloads:
   containers:
   - name: dagster
     image: dagster/dagster-celery-k8s
+    resources:
+      request:
+        cpu: 40
+        memory: 80
     helm:
       resources: dagsterWebserver.resources
       env: dagsterWebserver.env
@@ -144,6 +148,10 @@ workloads:
   containers:
   - name: dagster
     image: dagster/dagster-celery-k8s
+    resources:
+      request:
+        cpu: 40
+        memory: 80
     helm:
       resources: dagsterDaemon.resources
       env: dagsterDaemon.env
