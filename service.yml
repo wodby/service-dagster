@@ -17,14 +17,14 @@ endpoints:
 
 options:
 - version: '1'
-  tag: '1.13.29'
+  tag: '1.13.30'
   default: true
 
 helm:
   name: dagster
   source: https://dagster-io.github.io/helm
   chart: dagster/dagster
-  version: 1.13.29
+  version: 1.13.30
   valueMappings:
     replicas: dagsterWebserver.replicaCount
     serviceAccountName: global.serviceAccountName
