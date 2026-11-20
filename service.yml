@@ -18,6 +18,7 @@ endpoints:
 options:
 - version: '1'
   tag: '1.13.31'
+  digest: sha256:30b8078e9a1a100b5c02e842154c5a3d43e2181452a1578004f77e8ca16a6758
   default: true
 
 helm:
